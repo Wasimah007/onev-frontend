@@ -765,7 +765,7 @@ export default function Login() {
     <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
       <div className="bg-white rounded-2xl shadow-lg w-full max-w-md p-12">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Welcome </h1>
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">Welcome To The OneV </h1>
           <p className="text-gray-600">Sign in to continue to your account.</p>
         </div>
 
