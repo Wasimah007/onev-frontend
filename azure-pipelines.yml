@@ -1,0 +1,52 @@
+trigger:
+  branches:
+    include:
+      - master
+jobs:
+- job: Job_1
+  displayName: Agent job 1
+  pool:
+    name: onevfrontendVM
+  steps:
+  - checkout: self
+    fetchDepth: 1
+  - task: NodeTool@0
+    displayName: Use Node 20.x
+    inputs:
+      versionSpec: 20.x
+  - task: Npm@1
+    displayName: npm install
+    inputs:
+      verbose: false
+  - task: Npm@1
+    displayName: npm run build
+    inputs:
+      command: custom
+      verbose: false
+      customCommand: run build
+  - task: Bash@3
+    displayName: Bash Script
+    inputs:
+      targetType: inline
+      script: >
+        echo "Listing source directory"
+
+        ls -la $(Build.SourcesDirectory)
+
+
+        echo "Listing current directory"
+
+        ls -la
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish Artifact: drop'
+    inputs:
+      PathtoPublish: '$(Build.SourcesDirectory)/dist '
+  - task: AzureRmWebAppDeployment@5
+    displayName: 'Azure App Service Deploy: onevfrontend'
+    inputs:
+      ConnectedServiceName: 5f235e97-d4b5-495d-ab4b-9142fe2b57d7
+      WebAppKind: webAppLinux
+      WebAppName: onevfrontend
+      Package: '$(Build.SourcesDirectory)/dist '
+      RuntimeStack: NODE|18-lts
+...
